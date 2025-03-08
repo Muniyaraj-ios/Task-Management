@@ -109,9 +109,8 @@ final class TaskDetailsController: BaseController {
     }
     
     @objc func showCategoryMenu(_ sender: UIButton) {
-        let categories = taskManager.taskCategories.map{ $0.name }.dropFirst()//["Work", "Personal", "Shopping", "Fitness"]
+        let categories = taskManager.taskCategories.map{ $0.name }.dropFirst()
         
-        // Create actions dynamically
         let categoryActions = categories.map { category in
             UIAction(title: category.rawValue, image: UIImage(systemName: "tag")) { [weak self] _ in
                 print("Selected category: \(category)")
@@ -120,10 +119,8 @@ final class TaskDetailsController: BaseController {
             }
         }
         
-        // Create a menu with actions
         let categoryMenu = UIMenu(title: "Choose Category", children: categoryActions)
         
-        // Assign menu to button
         sender.menu = categoryMenu
         sender.showsMenuAsPrimaryAction = true
     }
@@ -181,6 +178,14 @@ final class TaskDetailsController: BaseController {
             }
         }catch let error as TaskValidationError {
             print("Validation Error: \(error.message)")
+            AlertHelper.showCustomAlert(
+                on: self,
+                title: error.message,
+                message: "",
+                onOk: {
+                }
+            )
+
         } catch {
             print("Unexpected error: \(error)")
         }

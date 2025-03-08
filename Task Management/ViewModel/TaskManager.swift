@@ -59,7 +59,6 @@ class TaskManager: NSObject, NSFetchedResultsControllerDelegate {
         task.category = taskData.category.rawValue
         task.status = TaskStatus.upcoming.rawValue
         
-        NotificationManager.instance.scheduleNotification()
         NotificationManager.instance.scheduleNotification(with: taskData)
         
         return save()
@@ -144,10 +143,10 @@ extension TaskManager{
         case .upcoming:
             statusPredicate = NSPredicate(format: "isCompleted == false AND dueDate >= %@", Date() as NSDate)
         case .overdue:
-            let overdueThreshold = today.timeIntervalSinceReferenceDate
-            statusPredicate = NSPredicate(format: "isCompleted == false AND dueDate.timeIntervalSinceReferenceDate < %f", overdueThreshold)
+            //let overdueThreshold = today.timeIntervalSinceReferenceDate
+            //statusPredicate = NSPredicate(format: "isCompleted == false AND dueDate.timeIntervalSinceReferenceDate < %f", overdueThreshold)
 
-            //statusPredicate = NSPredicate(format: "isCompleted == false AND dueDate < %@", Date() as NSDate)
+            statusPredicate = NSPredicate(format: "isCompleted == false AND dueDate < %@", Date() as NSDate)
         }
         
         if let statusPredicate = statusPredicate {

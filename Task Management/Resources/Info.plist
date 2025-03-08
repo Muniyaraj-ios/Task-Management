@@ -30,9 +30,9 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
-		<string>location</string>
 		<string>processing</string>
 		<string>fetch</string>
+		<string>location</string>
 	</array>
 </dict>
 </plist>

@@ -26,45 +26,6 @@ final class NotificationManager{
         }
     }
     
-    func scheduleNotification(){
-        
-        let content = UNMutableNotificationContent()
-        content.title = "This is my first notification!"
-        content.body = "This was sooooo easy!"
-        content.sound = .default
-        content.badge = 1
-        
-        // time
-        let trigger_time = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
-        
-        // calender
-        var datecomponents = DateComponents()
-        datecomponents.hour = 12
-        datecomponents.minute = 40
-        datecomponents.second = 0
-        //datecomponents.weekday = 7
-        let trigger_calender = UNCalendarNotificationTrigger(dateMatching: datecomponents, repeats: false)
-        
-        // location
-        let coordinate = CLLocationCoordinate2D(latitude: 9.9252, longitude: 78.1198)
-        let region = CLCircularRegion(center: coordinate, radius: CLLocationDistance(MapKeySettings.coordinate_region), identifier: UUID().uuidString)
-        region.notifyOnEntry = true
-        region.notifyOnExit = true
-        let trigger_location = UNLocationNotificationTrigger(region: region, repeats: true)
-        
-        // request
-        let request_time = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger_time)
-        UNUserNotificationCenter.current().add(request_time)
-        
-        let request_calender = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger_calender)
-        UNUserNotificationCenter.current().add(request_calender)
-        
-        let request_location = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger_location)
-        UNUserNotificationCenter.current().add(request_location)
-        
-        print("notifiction schedule...")
-    }
-    
     func scheduleNotification(with taskData: TaskData){
         scheduleCalendarNotification(with: taskData)
         locationBasedNotification(with: taskData)
