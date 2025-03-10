@@ -293,6 +293,9 @@
 				DEVELOPMENT_TEAM = PQH88KC8RZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Task Management/Resources/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Your location is used for reminder notifications when you arrive at or leave places ";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Your location is used for reminder notifications when you arrive at or leave places ";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used for reminder notifications when you arrive at or leave places ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -321,6 +324,9 @@
 				DEVELOPMENT_TEAM = PQH88KC8RZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Task Management/Resources/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Your location is used for reminder notifications when you arrive at or leave places ";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Your location is used for reminder notifications when you arrive at or leave places ";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used for reminder notifications when you arrive at or leave places ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

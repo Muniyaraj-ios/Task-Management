@@ -19,7 +19,11 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
+        locationManager.distanceFilter = 0
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.showsBackgroundLocationIndicator = true
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startMonitoringSignificantLocationChanges()
     }
     
     func start() {
@@ -33,16 +37,25 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     // MARK: - CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        // Pick the location with best (= smallest value) horizontal accuracy
         latestLocation = locations.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }.first
         locationDelegate?.currentLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedAlways || status == .authorizedWhenInUse {
-            locationManager.startUpdatingLocation()
-        } else {
-            locationManager.stopUpdatingLocation()
+        switch status {
+        case .notDetermined:
+            locationManager.requestAlwaysAuthorization()
+            break
+        case .restricted, .denied:
+            break
+        case .authorizedAlways, .authorizedWhenInUse:
+            start()
+            break
+        case .authorized:
+            start()
+            break
+        @unknown default:
+            break
         }
     }
 }

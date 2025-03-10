@@ -16,7 +16,7 @@ struct MapKeySettings{
     static let calendar = "-calendar"
 }
 
-class MapLocationController: BaseController {
+final class MapLocationController: BaseController {
     
     @IBOutlet weak var searchTF: CustomTextField!
     @IBOutlet weak var tableView: UITableView!
@@ -61,6 +61,7 @@ class MapLocationController: BaseController {
     private func mapViewSetup(){
         mapView.delegate = self
         locationViewModel.locationDelegate = self
+        locationViewModel.start()
     }
     @objc func buttonAction(_ sender: Any){
         if let selectedPlaceMark{
@@ -97,6 +98,7 @@ extension MapLocationController: LocationDelegate{
     
     func currentLocation() {
         guard let location = locationViewModel.latestLocation else{ return }
+        print("the current coordinats : \(location.coordinate)")
         locationViewModel.stop()
     }
     

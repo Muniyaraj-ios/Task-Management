@@ -11,12 +11,16 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var locationManager: LocationManager!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         NotificationManager.instance.requestAuthorizaion()
+        //locationManager = LocationManager()
+        //locationManager.start()
+        
+        application.registerForRemoteNotifications()
         return true
     }
 
