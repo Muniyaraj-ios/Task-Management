@@ -94,7 +94,8 @@ final class TaskListViewController: BaseController {
         priority_due_Btn.menu = createMenu()
         priority_due_Btn.showsMenuAsPrimaryAction = true
         
-        categoryListMenu()
+        searchView.moreOptionBtn.menu = categoryListMenu()
+        searchView.moreOptionBtn.showsMenuAsPrimaryAction = true
     }
     
     @objc func createTaskAction(_ sender: UIButton){
@@ -321,61 +322,42 @@ extension TaskListViewController: UICollectionViewDelegate, UICollectionViewData
 extension TaskListViewController{
     
     func createMenu() -> UIMenu {
-        let ratingImage = UIImage(systemName: "star")?.withTintColor(.orange, renderingMode: .alwaysOriginal)
-        let priceImage = UIImage(systemName: "dollarsign.circle")?.withTintColor(.orange, renderingMode: .alwaysOriginal)
         
-        let dueDateAction = UIAction(
-            title: "Due Date",
-            image: ratingImage,
-            state: taskManager.searchFields.sortByDueDate ? .on : .off
-        ) { [weak self] _ in
+        let dueDateAction = UIAction(title: "Due Date") { [weak self] _ in
             guard let self = self else { return }
             taskManager.searchFields.sortByDueDate.toggle()
             taskManager.fetchTasks()
-            self.updateButtonMenu()
+            priority_due_Btn.menu = createMenu()
         }
+        dueDateAction.state = taskManager.searchFields.sortByDueDate ? .on : .off
         
-        let priorityAction = UIAction(
-            title: "Priority",
-            image: priceImage,
-            state: taskManager.searchFields.sortByPriority ? .on : .off
-        ) { [weak self] _ in
+        let priorityAction = UIAction(title: "Priority") { [weak self] _ in
             guard let self = self else { return }
             taskManager.searchFields.sortByPriority.toggle()
             taskManager.fetchTasks()
-            self.updateButtonMenu()
+            priority_due_Btn.menu = createMenu()
         }
+        priorityAction.state = taskManager.searchFields.sortByPriority ? .on : .off
         
         return UIMenu(title: "", options: .displayInline, children: [dueDateAction, priorityAction])
     }
-
-    func updateButtonMenu() {
-        DispatchQueue.main.async {
-            if let button = self.view.subviews.first(where: { $0 is UIButton }) as? UIButton {
-                button.menu = self.createMenu()
-                button.showsMenuAsPrimaryAction = true // Ensures tap opens menu
-            }
-        }
-    }
-
     
-    private func categoryListMenu(){
+    private func categoryListMenu() -> UIMenu{
         
         let categories = taskManager.taskCategories.map{ $0.name }
         
         let categoryActions = categories.map { category in
-            UIAction(title: category.rawValue, image: nil) { [weak self] _ in
+            UIAction(title: category.rawValue, image: nil, state: category == taskManager.searchFields.category ? .on : .off) { [weak self] _ in
                 guard let self = self else{ return }
-                print("Selected category: \(category)")
                 taskManager.searchFields.category = category
                 taskManager.fetchTasks()
+                searchView.moreOptionBtn.menu = categoryListMenu()
             }
         }
+                
+        let categoryMenu = UIMenu(title: "Category", options: .displayInline, children: categoryActions)
         
-        let categoryMenu = UIMenu(title: "Category", children: categoryActions)
-        
-        searchView.moreOptionBtn.menu = categoryMenu
-        searchView.moreOptionBtn.showsMenuAsPrimaryAction = true
+        return categoryMenu
     }
 }
 extension TaskListViewController: TaskManagerDelegate{

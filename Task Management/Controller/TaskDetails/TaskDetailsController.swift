@@ -95,9 +95,11 @@ final class TaskDetailsController: BaseController {
         titleTF.delegate = self
         
         locationTF.addTarget(self, action: #selector(presentLocationPage), for: .editingDidBegin)
+        catgoryBtn.menu = showCategoryMenu()
+        catgoryBtn.showsMenuAsPrimaryAction = true
         
-        catgoryBtn.addTarget(self, action: #selector(showCategoryMenu(_:)), for: .touchUpInside)
-        priorityBtn.addTarget(self, action: #selector(showPriorityMenu(_:)), for: .touchUpInside)
+        priorityBtn.menu = showPriorityMenu()
+        priorityBtn.showsMenuAsPrimaryAction = true
         
         saveButton.configureButton(title: "Save", bgColor: .brandColor)
         saveButton.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
@@ -108,37 +110,38 @@ final class TaskDetailsController: BaseController {
         saveButton.isEnabled = (try? validateTaskInputs()) ?? false
     }
     
-    @objc func showCategoryMenu(_ sender: UIButton) {
+    private func showCategoryMenu()-> UIMenu{
         let categories = taskManager.taskCategories.map{ $0.name }.dropFirst()
         
         let categoryActions = categories.map { category in
-            UIAction(title: category.rawValue, image: UIImage(systemName: "tag")) { [weak self] _ in
+            UIAction(title: category.rawValue, state: category == taskCategory ? .on : .off) { [weak self] _ in
+                guard let self = self else{ return }
                 print("Selected category: \(category)")
-                self?.catgoryTF.text = category.rawValue
-                self?.taskCategory = category
+                catgoryTF.text = category.rawValue
+                taskCategory = category
+                catgoryBtn.menu = showCategoryMenu()
             }
         }
         
         let categoryMenu = UIMenu(title: "Choose Category", children: categoryActions)
         
-        sender.menu = categoryMenu
-        sender.showsMenuAsPrimaryAction = true
+        return categoryMenu
     }
     
-    @objc func showPriorityMenu(_ sender: UIButton) {
+    private func showPriorityMenu()-> UIMenu{
         let priorityLevels = Priority.allCases
-        let priorityIcons = ["exclamationmark.circle.fill", "exclamationmark.circle", "circle"]
-        let priorityActions = zip(priorityLevels, priorityIcons).map { (level, icon) in
-            UIAction(title: level.value, image: UIImage(systemName: icon)) { [weak self] _ in
+        let priorityActions = priorityLevels.map { level in
+            UIAction(title: level.value, state: level == taskPriortity ? .on : .off) { [weak self] _ in
+                guard let self = self else{ return }
                 print("Selected priority: \(level)")
-                self?.priorityTF.text = level.value
-                self?.taskPriortity = level
+                priorityTF.text = level.value
+                taskPriortity = level
+                priorityBtn.menu = showPriorityMenu()
             }
         }
         let priorityMenu = UIMenu(title: "Set Priority", options: .displayInline, children: priorityActions)
-
-        sender.menu = priorityMenu
-        sender.showsMenuAsPrimaryAction = true
+        
+        return priorityMenu
     }
     
     @objc private func presentLocationPage() {
