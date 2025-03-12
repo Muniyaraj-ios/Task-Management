@@ -39,11 +39,7 @@ A simple and efficient **Task Manager iOS app** built using **Swift**, **CoreDat
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Muniyaraj-ios/assets/main/tasks/task_list_page.png" alt="Preview 1" width="300">
-</p>
-<p align="center">
   <img src="https://raw.githubusercontent.com/Muniyaraj-ios/assets/main/tasks/task_reminder.png" alt="Preview 2" width="300">
-</p>
-<p align="center">
   <img src="https://raw.githubusercontent.com/Muniyaraj-ios/assets/main/tasks/location_based_notification.png" alt="Preview 3" width="300">
 </p>
 
